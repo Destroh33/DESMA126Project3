@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 868d795bfdc80e44cb21941497605bdc, type: 3}
+  m_Name: PlayerInventory_List
+  m_EditorClassIdentifier: 
+  inventory:
+  - itemType: {fileID: 11400000, guid: cbdf91ea8a18b214893f71ab48858a32, type: 2}
+    sprite: {fileID: 21300000, guid: 36c89739275ab05499762749b23f32ae, type: 3}
+    description: 'Sesame oil. Fragrant. '
+    qty: 1
+  - itemType: {fileID: 11400000, guid: cbdf91ea8a18b214893f71ab48858a32, type: 2}
+    sprite: {fileID: 21300000, guid: 36c89739275ab05499762749b23f32ae, type: 3}
+    description: 'Sesame oil. Fragrant. '
+    qty: 1
+  - itemType: {fileID: 11400000, guid: bf53ea743ad24a744a1982be14c2bfb1, type: 2}
+    sprite: {fileID: 21300000, guid: de0d3d469f7b3c7418057252434725a2, type: 3}
+    description: A cup of white grain rice. Freshly cooked.
+    qty: 1
+  - itemType: {fileID: 11400000, guid: 22c002ad0a0d05149b7593b632b53b18, type: 2}
+    sprite: {fileID: 21300000, guid: 95efca15375482d43b71c9f02117f8e2, type: 3}
+    description: Ginger. Unpeeled. Not my favourite.
+    qty: 1
+  - itemType: {fileID: 11400000, guid: 39d18ab288334ef439efc344ecd88f94, type: 2}
+    sprite: {fileID: 21300000, guid: d15ffefe3b9203948b99846a2f2252fb, type: 3}
+    description: Vegetable stock. Made of exclusively vegetables.
+    qty: 1
+  - itemType: {fileID: 11400000, guid: b59fef1d3df4f3d49933511587edc29f, type: 2}
+    sprite: {fileID: 21300000, guid: 28084dc4daa28e34984b898d39540113, type: 3}
+    description: Kikiman soy sauce. Less sodium.
+    qty: 1
+  maxCapacity: 6
