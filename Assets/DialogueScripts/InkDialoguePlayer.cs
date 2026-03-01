@@ -1,15 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.Events;
+
 public class InkDialoguePlayer : MonoBehaviour
 {
     public TextMeshProUGUI speakerBox;
     public TextMeshProUGUI textBox;
     public Button playButton;
+
     private Typewriter typewriter;
     int currLine = 0;
 
@@ -20,21 +21,43 @@ public class InkDialoguePlayer : MonoBehaviour
     [Header("DialogueOptions")]
     public Button[] choices;
     TextMeshProUGUI[] choicesText;
+
     public List<Tag> tags;
     public UnityEvent tagEvents;
+
     private void Start()
     {
         typewriter = GetComponent<Typewriter>();
         typewriter.textBox = textBox;
-        EnterStoryFromJSONText(storyJSON.text);
-        ContinueStory();
 
         choicesText = new TextMeshProUGUI[choices.Length];
         for (int i = 0; i < choices.Length; i++)
         {
-            choicesText[i] = choices[i].GetComponentInChildren<TextMeshProUGUI>();
+            choicesText[i] = choices[i].GetComponentInChildren<TextMeshProUGUI>(true);
         }
+
+        if (!storyJSON)
+            return;
+
+        EnterStoryFromJSONText(storyJSON.text);
+        ContinueStory();
     }
+
+    public void LoadStory(TextAsset story)
+    {
+        typewriter = GetComponent<Typewriter>();
+        typewriter.textBox = textBox;
+
+        if (!story)
+        {
+            Debug.LogError("LoadStory was called with null story TextAsset.");
+            return;
+        }
+
+        EnterStoryFromJSONText(story.text);
+        ContinueStory();
+    }
+
     public void MakeChoice(int choiceIndex)
     {
         if (!currentStory.canContinue)
@@ -44,10 +67,12 @@ public class InkDialoguePlayer : MonoBehaviour
             ContinueStory();
         }
     }
+
     void TryDisplayChoices()
     {
         HideAllChoices();
         List<Choice> currentChoices = currentStory.currentChoices;
+
         if (currentChoices.Count > choices.Length)
         {
             Debug.LogError("More choices were given than the UI can support. Number of choices given: " + currentChoices.Count);
@@ -61,6 +86,7 @@ public class InkDialoguePlayer : MonoBehaviour
             }
         }
     }
+
     void HideAllChoices()
     {
         foreach (Button choice in choices)
@@ -68,65 +94,81 @@ public class InkDialoguePlayer : MonoBehaviour
             choice.gameObject.SetActive(false);
         }
     }
+
     public void ContinueStory()
     {
-        if ((typewriter.isTyping))
+        if (typewriter.isTyping)
         {
             typewriter.StopTyping();
             DisplayLine(currentStory.currentText, false);
+            return;
+        }
+        if (currentStory.canContinue)
+        {
+            string newLine = currentStory.Continue();
+            DisplayLine(newLine);
+
+            if (currentStory.currentTags.Count > 0)
+            {
+                GetTags(currentStory.currentTags);
+                tagEvents.Invoke();
+            }
         }
         else
         {
-            if ((currentStory.canContinue))
-            {
-                string newLine = currentStory.Continue();
-                DisplayLine(newLine);
-                if(currentStory.currentTags.Count > 0)
-                {
-                    GetTags(currentStory.currentTags);
-                    tagEvents.Invoke();
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Can't continue story");
-            }
+            TryDisplayChoices();
+
+            if (currentStory.currentChoices.Count == 0)
+                Debug.LogWarning("Can't continue story (story ended).");
         }
     }
+
     public void EnterStoryFromJSONText(string json)
     {
         currentStory = new Story(json);
     }
+
     private void DisplayLine(string line, bool typewriteIsOn = true)
     {
+        string speaker = "";
+        string words = line;
+
         string[] splitLine = line.Split(':');
-        string speaker = splitLine[0];
-        string words = splitLine[1];
+        if (splitLine.Length >= 2)
+        {
+            speaker = splitLine[0];
+            words = string.Join(":", splitLine, 1, splitLine.Length - 1);
+        }
+        else
+        {
+            speaker = "";
+            words = line;
+        }
+
         speakerBox.text = speaker;
-        if(typewriteIsOn)
+
+        if (typewriteIsOn)
             typewriter.StartTyping(words);
         else
             typewriter.DisplayWholeLine(words);
 
         TryDisplayChoices();
-
     }
+
     void GetTags(List<string> currentTags)
     {
         if (tags != null)
-        {
             tags.Clear();
-        }
         else
-        {
             tags = new List<Tag>();
-        }
-        foreach(string tag in currentTags)
+
+        foreach (string tag in currentTags)
         {
             string[] splitTag = tag.Split(':');
-            if(splitTag.Length != 2)
+            if (splitTag.Length != 2)
             {
                 Debug.LogError("Tag is not in the correct format! Tag: " + tag);
+                continue;
             }
             string key = splitTag[0].Trim();
             string value = splitTag[1].Trim();
@@ -134,6 +176,7 @@ public class InkDialoguePlayer : MonoBehaviour
         }
     }
 }
+
 [System.Serializable]
 public class Tag
 {
