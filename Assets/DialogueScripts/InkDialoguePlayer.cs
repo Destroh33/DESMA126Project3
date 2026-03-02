@@ -19,11 +19,13 @@ public class InkDialoguePlayer : MonoBehaviour
     public Story currentStory;
 
     [Header("DialogueOptions")]
+    public GameObject choicesPanel;
     public Button[] choices;
     TextMeshProUGUI[] choicesText;
 
     public List<Tag> tags;
     public UnityEvent tagEvents;
+    public UnityEvent onStoryEnd;
 
     private void Start()
     {
@@ -77,8 +79,9 @@ public class InkDialoguePlayer : MonoBehaviour
         {
             Debug.LogError("More choices were given than the UI can support. Number of choices given: " + currentChoices.Count);
         }
-        else
+        else if (currentChoices.Count > 0)
         {
+            choicesPanel.SetActive(true);
             for (int i = 0; i < currentChoices.Count; i++)
             {
                 choices[i].gameObject.SetActive(true);
@@ -89,6 +92,7 @@ public class InkDialoguePlayer : MonoBehaviour
 
     void HideAllChoices()
     {
+        choicesPanel.SetActive(false);
         foreach (Button choice in choices)
         {
             choice.gameObject.SetActive(false);
@@ -119,7 +123,7 @@ public class InkDialoguePlayer : MonoBehaviour
             TryDisplayChoices();
 
             if (currentStory.currentChoices.Count == 0)
-                Debug.LogWarning("Can't continue story (story ended).");
+                onStoryEnd.Invoke();
         }
     }
 

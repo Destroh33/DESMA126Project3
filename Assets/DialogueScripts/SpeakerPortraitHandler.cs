@@ -19,13 +19,13 @@ public class SpeakerPortraitHandler : MonoBehaviour
         {
             switch (portraitTag.value)
             {
-                case "left":
-                    right.gameObject.SetActive(false);
-                    left.gameObject.SetActive(true);
+                case "yuriko":
+                    left.SetActive(true);
+                    right.SetActive(false);
                     break;
-                case "right":
-                    right.gameObject.SetActive(true);
-                    left.gameObject.SetActive(false);
+                case "iron":
+                    right.SetActive(true);
+                    left.SetActive(false);
                     break;
                 default:
                     break;

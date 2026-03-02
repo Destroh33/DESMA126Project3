@@ -31,19 +31,6 @@ public class PlayerTopDownMovement : MonoBehaviour
         rb.linearVelocity = lastMoveInput * speed;
     }
 
-    void Update()
-    {
-        if (!dialogueOpen || inkDialoguePlayer.currentStory == null)
-            return;
-
-        // Detect story end
-        if (!inkDialoguePlayer.currentStory.canContinue &&
-            inkDialoguePlayer.currentStory.currentChoices.Count == 0)
-        {
-            CloseDialogue();
-        }
-    }
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (!collision.gameObject.CompareTag("NPC"))
@@ -71,7 +58,7 @@ public class PlayerTopDownMovement : MonoBehaviour
         CloseDialogue();
     }
 
-    private void CloseDialogue()
+    public void CloseDialogue()
     {
         dialogueOpen = false;
         DialogueCanvas.SetActive(false);
