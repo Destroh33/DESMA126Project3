@@ -18,6 +18,12 @@ public class PlayerFishing : MonoBehaviour
     public float reelSpeed = 6f;
     public float reelFinishDistance = 0.5f;
 
+    [Header("Line")]
+    public float maxLineLength = 10f;
+    public int linePoints = 24;
+    public float sagFactor = 0.5f;
+    public float sagTransitionSpeed = 3f;
+
     private GameObject hookInstance;
     private Rigidbody2D hookRb;
     private FishingHook hookScript;
@@ -26,6 +32,9 @@ public class PlayerFishing : MonoBehaviour
     private bool hasEnteredWater = false;
     private bool wasInWater = false;
     private float moveInputX = 0f;
+    private float currentLineLength;
+    private float sagTransitionT = 0f;
+    private float sagMultiplier = 1f;
 
     private void Update()
     {
@@ -36,18 +45,26 @@ public class PlayerFishing : MonoBehaviour
             hasEnteredWater = true;
         wasInWater = hookScript.isInWater;
 
-        lineRenderer.SetPosition(0, rodTip.position);
-        lineRenderer.SetPosition(1, hookInstance.transform.position);
+        bool isReeling = Keyboard.current.spaceKey.isPressed && hasEnteredWater;
+
+        sagTransitionT = hasEnteredWater
+            ? Mathf.MoveTowards(sagTransitionT, 1f, Time.deltaTime * sagTransitionSpeed)
+            : 0f;
+
+        sagMultiplier = Mathf.MoveTowards(sagMultiplier, isReeling ? 0f : 1f, Time.deltaTime * sagTransitionSpeed);
+
+        UpdateLine();
 
         Vector2 toRod = (Vector2)rodTip.position - hookRb.position;
 
         if (!hookHasTraveled && toRod.magnitude > reelFinishDistance)
             hookHasTraveled = true;
 
-        bool isReeling = Keyboard.current.spaceKey.isPressed && hasEnteredWater;
-
         if (isReeling)
         {
+            currentLineLength -= reelSpeed * Time.deltaTime;
+            currentLineLength = Mathf.Max(0f, currentLineLength);
+
             hookRb.gravityScale = 0f;
             hookRb.linearVelocity = toRod.normalized * reelSpeed;
 
@@ -67,6 +84,31 @@ public class PlayerFishing : MonoBehaviour
         }
     }
 
+    void UpdateLine()
+    {
+        Vector2 start = rodTip.position;
+        Vector2 end = hookInstance.transform.position;
+
+        float straightDist = Vector2.Distance(start, end);
+        float slack = Mathf.Max(0f, currentLineLength - straightDist);
+        float offset = Mathf.Lerp(-straightDist * sagFactor, slack * sagFactor, sagTransitionT) * sagMultiplier;
+
+        Vector2 mid = (start + end) * 0.5f;
+        Vector2 controlPoint = mid + Vector2.down * offset;
+
+        for (int i = 0; i < linePoints; i++)
+        {
+            float t = i / (float)(linePoints - 1);
+            lineRenderer.SetPosition(i, QuadraticBezier(start, controlPoint, end, t));
+        }
+    }
+
+    static Vector2 QuadraticBezier(Vector2 a, Vector2 b, Vector2 c, float t)
+    {
+        float u = 1f - t;
+        return u * u * a + 2f * u * t * b + t * t * c;
+    }
+
     void OnUseRod()
     {
         if (!isCast)
@@ -84,12 +126,16 @@ public class PlayerFishing : MonoBehaviour
         hookHasTraveled = false;
         hasEnteredWater = false;
         wasInWater = false;
+        sagTransitionT = 0f;
+        sagMultiplier = 1f;
+        currentLineLength = maxLineLength;
+
         hookInstance = Instantiate(hookPrefab, rodTip.position, Quaternion.identity);
         hookRb = hookInstance.GetComponent<Rigidbody2D>();
         hookScript = hookInstance.GetComponent<FishingHook>() ?? hookInstance.AddComponent<FishingHook>();
         hookRb.AddForce(new Vector2(castForceX, castForceY), ForceMode2D.Impulse);
 
-        lineRenderer.positionCount = 2;
+        lineRenderer.positionCount = linePoints;
         lineRenderer.enabled = true;
     }
 
@@ -100,6 +146,8 @@ public class PlayerFishing : MonoBehaviour
         hookInstance = null;
         hookRb = null;
         hookScript = null;
+        sagTransitionT = 0f;
+        sagMultiplier = 1f;
         lineRenderer.enabled = false;
         Debug.Log("fishing finished");
     }

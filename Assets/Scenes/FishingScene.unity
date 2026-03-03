@@ -390,6 +390,10 @@ MonoBehaviour:
   waterSinkSpeed: 1.5
   reelSpeed: 6
   reelFinishDistance: 0.5
+  maxLineLength: 50
+  linePoints: 10
+  sagFactor: 0.1
+  sagTransitionSpeed: 3
 --- !u!50 &885851598
 Rigidbody2D:
   serializedVersion: 5
