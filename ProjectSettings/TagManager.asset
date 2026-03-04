@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NPC
   - Water
+  - Destroyer
   layers:
   - Default
   - TransparentFX

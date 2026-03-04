@@ -11,8 +11,10 @@ public class Fish : MonoBehaviour
     public float swimSpeed = 2f;
     public float sinAmplitude = 0.04f;
     public float sinFrequency = 2f;
-    [Tooltip("1 = right (default), -1 = left")]
-    public float direction = 1f;
+    public float direction = 1f;//right = 1 left = -1
+
+    public Sprite invImage;
+
 
     private float baseY;
     private float phaseOffset;

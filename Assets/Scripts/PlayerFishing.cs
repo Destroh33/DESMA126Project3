@@ -148,7 +148,7 @@ public class PlayerFishing : MonoBehaviour
     void FinishFishing()
     {
         if (hookScript.attachedFish != null && FishingInventory.Instance != null)
-            FishingInventory.Instance.AddFish(hookScript.attachedFish.fishType);
+            FishingInventory.Instance.AddFish(hookScript.attachedFish);
 
         isCast = false;
         Destroy(hookInstance); // also destroys parented fish

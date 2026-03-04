@@ -1,15 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
+
+[System.Serializable]
+public struct Slot
+{
+    public Image displayImage;
+    public TextMeshProUGUI countText;
+}
 
 public class FishingInventory : MonoBehaviour
 {
     public static FishingInventory Instance { get; private set; }
 
-    // Each slot: a unique FishType and how many have been caught
-    private readonly Dictionary<FishType, int> slots = new Dictionary<FishType, int>();
-
-    // Max distinct fish types that can fill slots (one slot per type)
     public const int MaxSlots = 5;
+
+    [SerializeField] private Slot[] uiSlots = new Slot[MaxSlots];
+
+    private readonly Dictionary<FishType, int> counts = new();
+    private readonly Dictionary<FishType, int> typeToSlotIndex = new();
+    private int nextFreeSlot = 0;
 
     void Awake()
     {
@@ -21,26 +32,46 @@ public class FishingInventory : MonoBehaviour
         Instance = this;
     }
 
-    public void AddFish(FishType type)
+    public void AddFish(Fish fish)
     {
-        if (slots.ContainsKey(type))
+        FishType type = fish.fishType;
+        bool isNew = !counts.ContainsKey(type);
+
+        if (!isNew)
         {
-            slots[type]++;
+            counts[type]++;
         }
-        else if (slots.Count < MaxSlots)
+        else if (nextFreeSlot < MaxSlots)
         {
-            slots[type] = 1;
+            counts[type] = 1;
+            typeToSlotIndex[type] = nextFreeSlot++;
         }
         else
         {
-            Debug.Log("Inventory full — no empty slot for a new fish type.");
+            Debug.Log("Inventory full.");
             return;
         }
 
-        Debug.Log($"Caught {type}! Count: {slots[type]}");
+        UpdateSlotUI(type, isNew ? fish.invImage : null);
+        Debug.Log($"Caught {type}! Count: {counts[type]}");
     }
 
-    public bool TryGetCount(FishType type, out int count) => slots.TryGetValue(type, out count);
+    void UpdateSlotUI(FishType type, Sprite newSprite)
+    {
+        if (!typeToSlotIndex.TryGetValue(type, out int index)) return;
+        Slot slot = uiSlots[index];
 
-    public IReadOnlyDictionary<FishType, int> GetSlots() => slots;
+        if (newSprite != null && slot.displayImage != null)
+        {
+            slot.displayImage.sprite = newSprite;
+            slot.displayImage.color = Color.white;
+        }
+
+        if (slot.countText != null)
+            slot.countText.text = counts[type].ToString();
+    }
+
+    public bool TryGetCount(FishType type, out int count) => counts.TryGetValue(type, out count);
+
+    public IReadOnlyDictionary<FishType, int> GetCounts() => counts;
 }
