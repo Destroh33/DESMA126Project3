@@ -31,6 +31,7 @@ public class PlayerFishing : MonoBehaviour
     private bool hookHasTraveled = false;
     private bool hasEnteredWater = false;
     private bool wasInWater = false;
+    private bool isRetractingAfterWater = false;
     private float moveInputX = 0f;
     private float currentLineLength;
     private float sagTransitionT = 0f;
@@ -41,11 +42,14 @@ public class PlayerFishing : MonoBehaviour
         if (!isCast || hookInstance == null)
             return;
 
+        bool justLeftWater = wasInWater && !hookScript.isInWater;
         if (!wasInWater && hookScript.isInWater)
             hasEnteredWater = true;
+        if (hasEnteredWater && justLeftWater)
+            isRetractingAfterWater = true;
         wasInWater = hookScript.isInWater;
 
-        bool isReeling = Keyboard.current.spaceKey.isPressed && hasEnteredWater;
+        bool isReeling = (Keyboard.current.spaceKey.isPressed && hasEnteredWater) || isRetractingAfterWater;
 
         sagTransitionT = hasEnteredWater
             ? Mathf.MoveTowards(sagTransitionT, 1f, Time.deltaTime * sagTransitionSpeed)
@@ -79,15 +83,16 @@ public class PlayerFishing : MonoBehaviour
         else
         {
             hookRb.gravityScale = 1f;
-            if (moveInputX != 0f)
-                hookRb.linearVelocity = new Vector2(moveInputX * hookMoveSpeed, hookRb.linearVelocity.y);
+            // no movement control until hook has entered water
         }
     }
 
     void UpdateLine()
     {
         Vector2 start = rodTip.position;
-        Vector2 end = hookInstance.transform.position;
+        Vector2 end = hookScript.lineAttachPoint != null
+            ? (Vector2)hookScript.lineAttachPoint.position
+            : (Vector2)hookInstance.transform.position;
 
         float straightDist = Vector2.Distance(start, end);
         float slack = Mathf.Max(0f, currentLineLength - straightDist);
@@ -126,6 +131,7 @@ public class PlayerFishing : MonoBehaviour
         hookHasTraveled = false;
         hasEnteredWater = false;
         wasInWater = false;
+        isRetractingAfterWater = false;
         sagTransitionT = 0f;
         sagMultiplier = 1f;
         currentLineLength = maxLineLength;
@@ -141,13 +147,17 @@ public class PlayerFishing : MonoBehaviour
 
     void FinishFishing()
     {
+        if (hookScript.attachedFish != null && FishingInventory.Instance != null)
+            FishingInventory.Instance.AddFish(hookScript.attachedFish.fishType);
+
         isCast = false;
-        Destroy(hookInstance);
+        Destroy(hookInstance); // also destroys parented fish
         hookInstance = null;
         hookRb = null;
         hookScript = null;
         sagTransitionT = 0f;
         sagMultiplier = 1f;
+        isRetractingAfterWater = false;
         lineRenderer.enabled = false;
         Debug.Log("fishing finished");
     }
