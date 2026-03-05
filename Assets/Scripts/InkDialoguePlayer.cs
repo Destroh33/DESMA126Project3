@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -26,6 +27,10 @@ public class InkDialoguePlayer : MonoBehaviour
     public List<Tag> tags;
     public UnityEvent tagEvents;
     public UnityEvent onStoryEnd;
+
+    /// <summary>Fired when the Ink story calls ~ TriggerFishSelection(). onStoryEnd will NOT fire for that story.</summary>
+    public event Action OnFishSelectionRequested;
+    private bool fishSelectionPending = false;
 
     private void Start()
     {
@@ -110,6 +115,26 @@ public class InkDialoguePlayer : MonoBehaviour
         if (currentStory.canContinue)
         {
             string newLine = currentStory.Continue();
+
+            if (string.IsNullOrWhiteSpace(newLine))
+            {
+                // Empty line (e.g. from a bare ~ function call) — skip display and resolve immediately
+                TryDisplayChoices();
+                if (currentStory.currentChoices.Count == 0)
+                {
+                    if (fishSelectionPending)
+                    {
+                        fishSelectionPending = false;
+                        OnFishSelectionRequested?.Invoke();
+                    }
+                    else
+                    {
+                        onStoryEnd.Invoke();
+                    }
+                }
+                return;
+            }
+
             DisplayLine(newLine);
 
             if (currentStory.currentTags.Count > 0)
@@ -123,13 +148,28 @@ public class InkDialoguePlayer : MonoBehaviour
             TryDisplayChoices();
 
             if (currentStory.currentChoices.Count == 0)
-                onStoryEnd.Invoke();
+            {
+                if (fishSelectionPending)
+                {
+                    fishSelectionPending = false;
+                    OnFishSelectionRequested?.Invoke();
+                }
+                else
+                {
+                    onStoryEnd.Invoke();
+                }
+            }
         }
     }
 
     public void EnterStoryFromJSONText(string json)
     {
+        fishSelectionPending = false;
         currentStory = new Story(json);
+        currentStory.BindExternalFunction("TriggerFishSelection", () =>
+        {
+            fishSelectionPending = true;
+        });
     }
 
     private void DisplayLine(string line, bool typewriteIsOn = true)

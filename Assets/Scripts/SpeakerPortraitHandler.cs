@@ -19,6 +19,15 @@ public class SpeakerPortraitHandler : MonoBehaviour
         {
             switch (portraitTag.value)
             {
+                case "sam":
+                    left.SetActive(true);
+                    right.SetActive(false);
+                    break;
+                case "noelle":
+                case "norman":
+                    right.SetActive(true);
+                    left.SetActive(false);
+                    break;
                 case "yuriko":
                     left.SetActive(true);
                     right.SetActive(false);

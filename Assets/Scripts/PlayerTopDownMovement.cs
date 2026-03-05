@@ -8,6 +8,7 @@ public class PlayerTopDownMovement : MonoBehaviour
     [SerializeField] float speed = 5f;
     [SerializeField] GameObject DialogueCanvas;
     [SerializeField] InkDialoguePlayer inkDialoguePlayer;
+    [SerializeField] NPCInteractionController npcInteractionController;
 
     private bool dialogueOpen = false;
     private Vector2 lastMoveInput;
@@ -37,17 +38,16 @@ public class PlayerTopDownMovement : MonoBehaviour
             return;
 
         var npc = collision.gameObject.GetComponent<NPCScript>();
-        if (npc == null || npc.storyJSON == null)
+        if (npc == null)
         {
-            Debug.LogError("NPC missing storyJSON.");
+            Debug.LogError("NPC GameObject is missing an NPCScript component.");
             return;
         }
 
         dialogueOpen = true;
         rb.linearVelocity = Vector2.zero;
 
-        DialogueCanvas.SetActive(true);
-        inkDialoguePlayer.LoadStory(npc.storyJSON);
+        npcInteractionController.StartInteraction(npc);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
