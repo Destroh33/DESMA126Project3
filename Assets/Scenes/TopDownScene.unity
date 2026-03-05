@@ -1006,6 +1006,7 @@ MonoBehaviour:
   dialoguePlayer: {fileID: 5337146188715597932}
   fishSelectionUI: {fileID: 464275363}
   dialogueCanvas: {fileID: 1972119044}
+  playerMovement: {fileID: 1809376952}
 --- !u!1 &1813868877
 GameObject:
   m_ObjectHideFlags: 0
