@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum FishType { Blue, Catfish, Rainbow, Trout, Tuna }
+public enum FishType { Blue, Catfish, Rainbow, Bass, Tuna }
 
 public class Fish : MonoBehaviour
 {

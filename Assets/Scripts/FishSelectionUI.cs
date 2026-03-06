@@ -2,19 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>
-/// Turns the existing fishing inventory UI into an interactive fish-picker
-/// by overlaying a Button on each slot.
-///
-/// Setup in Inspector:
-///   - slotButtons : one Button per inventory slot, parented/overlaid ON TOP of each
-///                   existing inventory slot image. Order must match FishingInventory's
-///                   uiSlots order (slot 0, 1, 2, 3, 4).
-///   - cancelButton: a "Give Nothing" button placed above/near the inventory UI.
-///
-/// The inventory images and count texts update automatically via FishingInventory
-/// when RemoveFish is called — no extra work needed here.
-/// </summary>
+
 public class FishSelectionUI : MonoBehaviour
 {
     [SerializeField] private Button[] slotButtons;   // one per inventory slot

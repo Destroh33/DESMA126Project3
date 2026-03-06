@@ -1,13 +1,13 @@
 fileFormatVersion: 2
-guid: 62da93bbf6c666c4ca65c0e49ef50f94
+guid: 409c161c5d4dc244298d519b9f4fd267
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects:
   - first:
       type: UnityEngine:AnimationClip
       assembly: UnityEngine.AnimationModule
-      name: basicfish_Clip
-    second: {fileID: 7400000, guid: 333efd67dd299d9459bd86e12911be70, type: 2}
+      name: rainbowfish_Clip
+    second: {fileID: 7400000, guid: 02977c83db52b634aa81ee08f2a5060f, type: 2}
   serializedVersion: 2
   userData: 
   assetBundleName: 
@@ -41,7 +41,7 @@ ScriptedImporter:
     spriteMeshType: 1
     alignment: 0
     spritePivot: {x: 0.5, y: 0.5}
-    spritePixelsToUnits: 32
+    spritePixelsToUnits: 24
     spriteBorder: {x: 0, y: 0, z: 0, w: 0}
     spriteGenerateFallbackPhysicsShape: 0
     generateCubemap: 6
@@ -107,7 +107,7 @@ ScriptedImporter:
     generateIndividualEvents: 1
     generateSpriteAtlas: 1
   importFileNodeState: 1
-  platformSettingsDirtyTick: 639083276232113737
+  platformSettingsDirtyTick: 639081481320294985
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -144,7 +144,7 @@ ScriptedImporter:
       y: 4
       width: 24
       height: 10
-    spriteID: 3e0bc6937ac317d4f86c03557de2da8a
+    spriteID: 410feb424927c5949b4be3b256c2fd75
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -165,7 +165,7 @@ ScriptedImporter:
       y: 22
       width: 22
       height: 10
-    spriteID: 2dd27ce9f961ab842b00165addba3d2f
+    spriteID: 3a422f84990f76a4e8bc12912d7be3d8
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -179,12 +179,12 @@ ScriptedImporter:
   asepriteLayers:
   - layerIndex: 0
     uuid:
-      value0: 2248574126
+      value0: 810064058
       value1: 0
       value2: 0
       value3: 0
     guid: 0
-    name: basicfish
+    name: rainbowfish
     layerFlags: 0
     layerType: 0
     blendMode: 0
@@ -197,7 +197,7 @@ ScriptedImporter:
         y: 8
         width: 24
         height: 10
-      spriteId: 3e0bc6937ac317d4f86c03557de2da8a
+      spriteId: 410feb424927c5949b4be3b256c2fd75
     - name: Frame_1
       frameIndex: 1
       additiveSortOrder: 0
@@ -206,7 +206,7 @@ ScriptedImporter:
         y: 8
         width: 22
         height: 10
-      spriteId: 2dd27ce9f961ab842b00165addba3d2f
+      spriteId: 3a422f84990f76a4e8bc12912d7be3d8
     linkedCells: []
     tileCells: []
     tileSetIndex: 0
