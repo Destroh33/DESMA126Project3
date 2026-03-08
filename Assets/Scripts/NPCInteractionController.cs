@@ -116,10 +116,22 @@ public class NPCInteractionController : MonoBehaviour
 
         // The dialogue canvas is closed by PlayerTopDownMovement.CloseDialogue(),
         // which is wired to onStoryEnd in the Inspector. No need to do it here.
+        // But we do need to ensure the fish UI is hidden.
+        fishSelectionUI.Hide();
+    }
+
+    /// <summary>Called by PlayerTopDownMovement when the player leaves the NPC's collision area.</summary>
+    public void EndInteraction()
+    {
+        waitingForFishSelection = false;
+        fishSelectionUI.Hide();
+        currentNPC = null;
+        playerMovement.CloseDialogue();
     }
 
     private void CloseDialogue()
     {
+        fishSelectionUI.Hide();
         currentNPC = null;
         playerMovement.CloseDialogue();
     }

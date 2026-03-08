@@ -87,7 +87,7 @@ public class PlayerTopDownMovement : MonoBehaviour
         if (!collision.gameObject.CompareTag("NPC"))
             return;
 
-        CloseDialogue();
+        npcInteractionController.EndInteraction();
     }
 
     public void CloseDialogue()
