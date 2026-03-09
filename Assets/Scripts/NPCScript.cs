@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 [System.Serializable]
 public struct FishStoryMapping
 {
@@ -21,10 +21,20 @@ public class NPCScript : MonoBehaviour
     public FishStoryMapping[] fishStoryMappings;
 
     [Header("Runtime State")]
-    [Tooltip("Automatically set to true after the first interaction completes.")]
-    public bool hasMetPlayer = false;
+    [Tooltip("Unique identifier used for persistence. Leave empty to use the GameObject name.")]
+    public string npcID;
 
-    /// <summary>Returns the correct opening story based on whether the player has met this NPC.</summary>
+    private static HashSet<string> metNPCs = new HashSet<string>();
+
+    private static Dictionary<string, HashSet<FishType>> fishGivenByNPC = new Dictionary<string, HashSet<FishType>>();
+
+    private string ID => string.IsNullOrEmpty(npcID) ? gameObject.name : npcID;
+
+    public bool hasMetPlayer
+    {
+        get => metNPCs.Contains(ID);
+    }
+
     public TextAsset GetCurrentStory()
     {
         if (!hasMetPlayer || preApprenticeStory == null)
@@ -33,8 +43,6 @@ public class NPCScript : MonoBehaviour
         return preApprenticeStory;
     }
 
-    /// <summary>Returns the Ink story to play when the player gives this NPC the specified fish type.
-    /// Returns false if no mapping exists for that type.</summary>
     public bool TryGetFishStory(FishType fishType, out TextAsset story)
     {
         story = null;
@@ -51,6 +59,21 @@ public class NPCScript : MonoBehaviour
 
     public void MarkMet()
     {
-        hasMetPlayer = true;
+        metNPCs.Add(ID);
+    }
+
+    public void MarkFishGiven(FishType fish)
+    {
+        if (!fishGivenByNPC.TryGetValue(ID, out var set))
+        {
+            set = new HashSet<FishType>();
+            fishGivenByNPC[ID] = set;
+        }
+        set.Add(fish);
+    }
+
+    public bool HasBeenGivenFish(FishType fish)
+    {
+        return fishGivenByNPC.TryGetValue(ID, out var set) && set.Contains(fish);
     }
 }

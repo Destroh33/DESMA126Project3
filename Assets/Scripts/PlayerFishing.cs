@@ -1,13 +1,15 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PlayerFishing : MonoBehaviour
 {
+    // Static flag to indicate if returning from fishing
+    public static bool ReturningFromFishing = false;
     [Header("References")]
     public GameObject hookPrefab;
     public Transform rodTip;
     public LineRenderer lineRenderer;
-    public float walkSpeed = 5f;
 
     [Header("Casting")]
     public float castForceX = -8f;
@@ -25,7 +27,6 @@ public class PlayerFishing : MonoBehaviour
     public float sagFactor = 0.5f;
     public float sagTransitionSpeed = 3f;
 
-    private Rigidbody2D playerRb;
     private GameObject hookInstance;
     private Rigidbody2D hookRb;
     private FishingHook hookScript;
@@ -39,17 +40,10 @@ public class PlayerFishing : MonoBehaviour
     private float sagTransitionT = 0f;
     private float sagMultiplier = 1f;
 
-    private void Awake()
-    {
-        playerRb = GetComponent<Rigidbody2D>();
-    }
-
     private void Update()
     {
         if (!isCast || hookInstance == null)
         {
-            if (playerRb != null)
-                playerRb.linearVelocity = new Vector2(moveInputX * walkSpeed, playerRb.linearVelocity.y);
             return;
         }
 
@@ -171,5 +165,9 @@ public class PlayerFishing : MonoBehaviour
         isRetractingAfterWater = false;
         lineRenderer.enabled = false;
         Debug.Log("fishing finished");
+
+        // Set flag and load scene
+        ReturningFromFishing = true;
+        SceneManager.LoadScene("TopDownScene");
     }
 }

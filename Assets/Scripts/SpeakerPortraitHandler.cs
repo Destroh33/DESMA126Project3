@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class SpeakerPortraitHandler : MonoBehaviour
 {
     public GameObject left;
-    public GameObject right;
+    // specific right-side portraits
+    public GameObject rightNoelle;
+    public GameObject rightNorman;
     public InkDialoguePlayer InkDialogueManager; //reference to the dialogue manager to access tags
     public void UpdatePortrait()
     {
@@ -21,20 +23,24 @@ public class SpeakerPortraitHandler : MonoBehaviour
             {
                 case "sam":
                     left.SetActive(true);
-                    right.SetActive(false);
+                    DisableAllRight();
                     break;
                 case "noelle":
+                    EnableRightSpecific(rightNoelle);
+                    left.SetActive(false);
+                    break;
                 case "norman":
-                    right.SetActive(true);
+                    EnableRightSpecific(rightNorman);
                     left.SetActive(false);
                     break;
                 case "yuriko":
                     left.SetActive(true);
-                    right.SetActive(false);
+                    DisableAllRight();
                     break;
                 case "iron":
-                    right.SetActive(true);
+                    // no right portrait for iron anymore
                     left.SetActive(false);
+                    DisableAllRight();
                     break;
                 default:
                     break;
@@ -44,5 +50,18 @@ public class SpeakerPortraitHandler : MonoBehaviour
         {
             print("no portrait tag detected in current line.");
         }
+    }
+
+    // helper methods to handle specific right sprites
+    private void DisableAllRight()
+    {
+        if (rightNoelle != null) rightNoelle.SetActive(false);
+        if (rightNorman != null) rightNorman.SetActive(false);
+    }
+
+    private void EnableRightSpecific(GameObject go)
+    {
+        DisableAllRight();
+        if (go != null) go.SetActive(true);
     }
 }

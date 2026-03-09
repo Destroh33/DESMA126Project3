@@ -1,19 +1,5 @@
 using UnityEngine;
 
-/// <summary>
-/// Manages the full NPC interaction flow:
-///   1. Load the correct opening story (first-meet vs. returning visit).
-///   2. When the Ink story calls ~ TriggerFishSelection(), show the fish-selection UI.
-///   3. After the player picks a fish, consume it from inventory and play the fish-specific story.
-///   4. Mark the NPC as "met" after their first story completes.
-///
-/// Attach this to the same GameObject as PlayerTopDownMovement.
-///
-/// Inspector wiring required:
-///   - dialoguePlayer   → the InkDialoguePlayer in the scene
-///   - fishSelectionUI  → the FishSelectionUI component
-///   - dialogueCanvas   → the dialogue Canvas GameObject
-/// </summary>
 public class NPCInteractionController : MonoBehaviour
 {
     [SerializeField] private InkDialoguePlayer dialoguePlayer;
@@ -40,7 +26,6 @@ public class NPCInteractionController : MonoBehaviour
         fishSelectionUI.OnCancelled -= HandleFishSelectionCancelled;
     }
 
-    /// <summary>Called by PlayerTopDownMovement when the player touches an NPC.</summary>
     public void StartInteraction(NPCScript npc)
     {
         currentNPC = npc;
@@ -57,12 +42,9 @@ public class NPCInteractionController : MonoBehaviour
         dialoguePlayer.LoadStory(story);
     }
 
-    // --- Event handlers ---
 
     private void HandleFishSelectionRequested()
     {
-        // The pre-apprentice story has ended after calling TriggerFishSelection.
-        // Show the fish picker — dialogue canvas stays open.
         waitingForFishSelection = true;
 
         var inventory = FishingInventory.Instance;
@@ -74,7 +56,6 @@ public class NPCInteractionController : MonoBehaviour
 
         if (!hasAnyFish)
         {
-            // No fish to give — just close.
             Debug.Log("Player has no fish to show.");
             CloseDialogue();
             return;
@@ -87,10 +68,8 @@ public class NPCInteractionController : MonoBehaviour
     {
         waitingForFishSelection = false;
 
-        // Consume one fish from inventory
         FishingInventory.Instance.RemoveFish(fishType);
 
-        // Play the fish-specific story for this NPC
         if (currentNPC != null && currentNPC.TryGetFishStory(fishType, out TextAsset fishStory))
         {
             dialoguePlayer.LoadStory(fishStory);
@@ -110,17 +89,12 @@ public class NPCInteractionController : MonoBehaviour
 
     private void HandleStoryEnd()
     {
-        // Mark NPC as met if this was the first interaction
         if (currentNPC != null && !currentNPC.hasMetPlayer)
             currentNPC.MarkMet();
 
-        // The dialogue canvas is closed by PlayerTopDownMovement.CloseDialogue(),
-        // which is wired to onStoryEnd in the Inspector. No need to do it here.
-        // But we do need to ensure the fish UI is hidden.
         fishSelectionUI.Hide();
     }
 
-    /// <summary>Called by PlayerTopDownMovement when the player leaves the NPC's collision area.</summary>
     public void EndInteraction()
     {
         waitingForFishSelection = false;

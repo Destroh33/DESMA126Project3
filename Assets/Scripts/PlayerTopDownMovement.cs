@@ -8,6 +8,7 @@ public class PlayerTopDownMovement : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     [SerializeField] float speed = 5f;
+    [SerializeField] Vector3 fishingReturnSpawnPoint = new Vector3(0, 0, 0); // Set this in Inspector for the spawn point after fishing
     [SerializeField] GameObject DialogueCanvas;
     [SerializeField] InkDialoguePlayer inkDialoguePlayer;
     [SerializeField] NPCInteractionController npcInteractionController;
@@ -23,6 +24,13 @@ public class PlayerTopDownMovement : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         lastDirection = Vector2.down;
         DialogueCanvas.SetActive(false);
+
+        // Check if returning from fishing
+        if (PlayerFishing.ReturningFromFishing)
+        {
+            transform.position = fishingReturnSpawnPoint;
+            PlayerFishing.ReturningFromFishing = false; // Reset flag
+        }
     }
 
     void OnMove(InputValue v)
