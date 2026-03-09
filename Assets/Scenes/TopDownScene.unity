@@ -391,14 +391,14 @@ RectTransform:
   m_GameObject: {fileID: 307302061}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.39947915, y: 0.39947915, z: 0.39947915}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1972119048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -200, y: 0}
+  m_AnchoredPosition: {x: -200, y: 63.7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &307302063
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300006, guid: 9774bc62617a117458c595c1a0e7a652, type: 3}
+  m_Sprite: {fileID: -7990174511705273325, guid: 530a12530f049764584ebb3156a5bb39, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -801,7 +801,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300018, guid: 9774bc62617a117458c595c1a0e7a652, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5f7d3a43706a87c46a097bb0f434c225, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -828,14 +828,14 @@ RectTransform:
   m_GameObject: {fileID: 1044587204}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.39947915, y: 0.39947915, z: 0.39947915}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1972119048}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 0}
+  m_AnchoredPosition: {x: 200, y: 41.3}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1400904599
@@ -897,7 +897,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: ed89d95c51b847649b2cdac9932d264d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10391,7 +10391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102d5a1275008814e89bc6ad10b1e281, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerTopDownMovement
-  speed: 2
+  speed: 3
   DialogueCanvas: {fileID: 1972119044}
   inkDialoguePlayer: {fileID: 5337146188715597932}
   npcInteractionController: {fileID: 1809376957}
@@ -10678,7 +10678,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300018, guid: 9774bc62617a117458c595c1a0e7a652, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5f7d3a43706a87c46a097bb0f434c225, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -10698,7 +10698,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 7.17, y: -0.28606, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -10823,11 +10823,11 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 307302062}
+  - {fileID: 1044587207}
   - {fileID: 3642182837016015774}
   - {fileID: 4812220196164105560}
   - {fileID: 7454876033487291967}
-  - {fileID: 307302062}
-  - {fileID: 1044587207}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
