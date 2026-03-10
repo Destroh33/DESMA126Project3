@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6253699268548448106}
   m_Layer: 0
   m_Name: Bluefish
-  m_TagString: Untagged
+  m_TagString: waterend
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fish
   fishType: 0
-  swimSpeed: 2
-  sinAmplitude: 0.5
+  swimSpeed: 1
+  sinAmplitude: 0.3
   sinFrequency: 2
   direction: 1
   invImage: {fileID: -3772713531818138686, guid: 409c161c5d4dc244298d519b9f4fd267, type: 3}
@@ -126,7 +126,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!1 &6899394678086444982
 GameObject:
   m_ObjectHideFlags: 0

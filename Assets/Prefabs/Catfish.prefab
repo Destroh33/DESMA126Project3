@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5348563936950777955}
   - component: {fileID: 6253699268548448106}
   m_Layer: 0
-  m_Name: Bass
+  m_Name: Catfish
   m_TagString: waterend
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47,13 +47,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f13fccb2923076249a98a512b2609747, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fish
-  fishType: 3
-  swimSpeed: 1.5
-  sinAmplitude: 0.1
-  sinFrequency: 1
+  fishType: 1
+  fishId: 
+  swimSpeed: 2.2
+  sinAmplitude: 0.5
+  sinFrequency: 2
   direction: 1
-  invImage: {fileID: -6637338574939527182, guid: 62da93bbf6c666c4ca65c0e49ef50f94, type: 3}
-  waterColor: {r: 0.7216981, g: 0.7216981, b: 1, a: 1}
+  invImage: {fileID: 5260779677401383656, guid: 77f08ab2debfcc9428bfacd32a689b93, type: 3}
+  waterColor: {r: 0.7028302, g: 0.7028302, b: 1, a: 1}
 --- !u!61 &5348563936950777955
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -88,7 +89,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.020321846, y: -0.056467533}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -98,7 +99,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 3.0603714, y: 1}
+  m_Size: {x: 1.9310207, y: 0.88706493}
   m_EdgeRadius: 0
 --- !u!50 &6253699268548448106
 Rigidbody2D:
@@ -137,9 +138,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4465379911666952674}
   - component: {fileID: 6744549930142877183}
-  - component: {fileID: 7555213479065655454}
+  - component: {fileID: 5352300490042273718}
   m_Layer: 0
-  m_Name: Trout
+  m_Name: catfish
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,8 +155,8 @@ Transform:
   m_GameObject: {fileID: 6899394678086444982}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -1.154, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 3}
+  m_LocalPosition: {x: 0, y: -1.04, z: 0}
+  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5009097676937802422}
@@ -209,7 +210,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7999388268883491479, guid: 62da93bbf6c666c4ca65c0e49ef50f94, type: 3}
+  m_Sprite: {fileID: 5260779677401383656, guid: 77f08ab2debfcc9428bfacd32a689b93, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -219,7 +220,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
---- !u!95 &7555213479065655454
+--- !u!95 &5352300490042273718
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -229,7 +230,7 @@ Animator:
   m_GameObject: {fileID: 6899394678086444982}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 8a78d1ca48f35d54ebfb51bfec05ff2e, type: 2}
+  m_Controller: {fileID: 9100000, guid: 02f9bc6a29eac3f4694d4435d9766884, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

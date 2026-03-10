@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerFishing : MonoBehaviour
 {
-    // Static flag to indicate if returning from fishing
     public static bool ReturningFromFishing = false;
     [Header("References")]
     public GameObject hookPrefab;
@@ -88,7 +87,7 @@ public class PlayerFishing : MonoBehaviour
         else
         {
             hookRb.gravityScale = 1f;
-            // no movement control until hook has entered water
+           
         }
     }
 
@@ -152,11 +151,16 @@ public class PlayerFishing : MonoBehaviour
 
     void FinishFishing()
     {
-        if (hookScript.attachedFish != null && FishingInventory.Instance != null)
-            FishingInventory.Instance.AddFish(hookScript.attachedFish);
+        if (hookScript.attachedFish != null)
+        {
+            if (FishingInventory.Instance != null)
+                FishingInventory.Instance.AddFish(hookScript.attachedFish);
+            if (!string.IsNullOrEmpty(hookScript.attachedFish.fishId))
+                Fish.MarkCaught(hookScript.attachedFish.fishId);
+        }
 
         isCast = false;
-        Destroy(hookInstance); // also destroys parented fish
+        Destroy(hookInstance); 
         hookInstance = null;
         hookRb = null;
         hookScript = null;
@@ -165,8 +169,6 @@ public class PlayerFishing : MonoBehaviour
         isRetractingAfterWater = false;
         lineRenderer.enabled = false;
         Debug.Log("fishing finished");
-
-        // Set flag and load scene
         ReturningFromFishing = true;
         SceneManager.LoadScene("TopDownScene");
     }

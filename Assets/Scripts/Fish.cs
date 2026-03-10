@@ -1,11 +1,18 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum FishType { Blue, Catfish, Rainbow, Bass, Tuna }
 
 public class Fish : MonoBehaviour
 {
+    private static readonly HashSet<string> caughtFishIds = new HashSet<string>();
+
+    public static void MarkCaught(string id) => caughtFishIds.Add(id);
+    public static void ResetAll() => caughtFishIds.Clear();
+
     [Header("Type")]
     public FishType fishType;
+    public string fishId;
 
     [Header("Movement")]
     public float swimSpeed = 2f;
@@ -24,6 +31,12 @@ public class Fish : MonoBehaviour
     private bool isCaught = false;
     private Vector3 originalScale;
 
+    void Awake()
+    {
+        if (!string.IsNullOrEmpty(fishId) && caughtFishIds.Contains(fishId))
+            Destroy(gameObject);
+    }
+
     void Start()
     {
         baseY = transform.position.y;
@@ -33,7 +46,7 @@ public class Fish : MonoBehaviour
         var sr = GetComponent<SpriteRenderer>();
         if(sr==null)
             sr = GetComponentInChildren<SpriteRenderer>();
-        
+
         if (sr != null)
             sr.flipX = direction < 0f;
     }
@@ -63,10 +76,20 @@ public class Fish : MonoBehaviour
         if (col != null) col.enabled = false;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         if (!isCaught && other.CompareTag("Destroyer"))
             Destroy(gameObject);
+    }
+    void OnCollisionEnter2D(Collision2D c)
+    {
+        if(!isCaught && c.gameObject.CompareTag("waterend"))
+        {
+            direction *=-1;
+            var sr = GetComponentInChildren<SpriteRenderer>();
+            if(sr)
+                sr.flipX = !sr.flipX;
+        }
     }
 
     private void OnTriggerStay2D(Collider2D other)

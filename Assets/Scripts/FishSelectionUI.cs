@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class FishSelectionUI : MonoBehaviour
 {
-    [SerializeField] private Button[] slotButtons;   // one per inventory slot
+    [SerializeField] private Button[] slotButtons;  
     [SerializeField] private Button cancelButton;
 
     public event Action<FishType> OnFishChosen;
@@ -25,7 +25,7 @@ public class FishSelectionUI : MonoBehaviour
         SetButtonsVisible(false);
     }
 
-    /// <summary>Enable only the buttons whose slots actually contain fish.</summary>
+    
     public void Show()
     {
         var inventory = FishingInventory.Instance;
