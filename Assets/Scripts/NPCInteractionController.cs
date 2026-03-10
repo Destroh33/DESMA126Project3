@@ -68,7 +68,15 @@ public class NPCInteractionController : MonoBehaviour
     {
         waitingForFishSelection = false;
 
+        if (currentNPC != null && currentNPC.HasBeenGivenFish(fishType))
+        {
+            // Fish already seen — don't remove it from inventory, just end with a short line
+            dialoguePlayer.ShowOneLineAndEnd("", "Hmm.. I've seen that already.");
+            return;
+        }
+
         FishingInventory.Instance.RemoveFish(fishType);
+        if (currentNPC != null) currentNPC.MarkFishGiven(fishType);
 
         if (currentNPC != null && currentNPC.TryGetFishStory(fishType, out TextAsset fishStory))
         {

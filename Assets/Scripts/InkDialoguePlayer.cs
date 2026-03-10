@@ -11,7 +11,7 @@ public class InkDialoguePlayer : MonoBehaviour
     public TextMeshProUGUI speakerBox;
     public TextMeshProUGUI textBox;
     public Button playButton;
-
+    
     private Typewriter typewriter;
     int currLine = 0;
 
@@ -31,6 +31,8 @@ public class InkDialoguePlayer : MonoBehaviour
     /// <summary>Fired when the Ink story calls ~ TriggerFishSelection(). onStoryEnd will NOT fire for that story.</summary>
     public event Action OnFishSelectionRequested;
     private bool fishSelectionPending = false;
+    private bool oneLineMode = false;
+    private string oneLineMessage = "";
 
     private void Start()
     {
@@ -104,8 +106,37 @@ public class InkDialoguePlayer : MonoBehaviour
         }
     }
 
+    /// <summary>Display a single message line and fire onStoryEnd on the next button press.</summary>
+    public void ShowOneLineAndEnd(string speaker, string message)
+    {
+        fishSelectionPending = false;
+        oneLineMode = true;
+        currentStory = null;
+
+        typewriter = GetComponent<Typewriter>();
+        typewriter.textBox = textBox;
+        HideAllChoices();
+
+        oneLineMessage = message;
+        speakerBox.text = speaker;
+        typewriter.StartTyping(message);
+    }
+
     public void ContinueStory()
     {
+        if (oneLineMode)
+        {
+            if (typewriter.isTyping)
+            {
+                typewriter.StopTyping();
+                typewriter.DisplayWholeLine(oneLineMessage);
+                return;
+            }
+            oneLineMode = false;
+            onStoryEnd.Invoke();
+            return;
+        }
+
         if (typewriter.isTyping)
         {
             typewriter.StopTyping();
