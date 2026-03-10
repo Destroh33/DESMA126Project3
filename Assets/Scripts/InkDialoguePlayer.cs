@@ -11,7 +11,7 @@ public class InkDialoguePlayer : MonoBehaviour
     public TextMeshProUGUI speakerBox;
     public TextMeshProUGUI textBox;
     public Button playButton;
-    
+
     private Typewriter typewriter;
     int currLine = 0;
 
@@ -28,7 +28,7 @@ public class InkDialoguePlayer : MonoBehaviour
     public UnityEvent tagEvents;
     public UnityEvent onStoryEnd;
 
-    /// <summary>Fired when the Ink story calls ~ TriggerFishSelection(). onStoryEnd will NOT fire for that story.</summary>
+   
     public event Action OnFishSelectionRequested;
     private bool fishSelectionPending = false;
     private bool oneLineMode = false;
@@ -106,7 +106,6 @@ public class InkDialoguePlayer : MonoBehaviour
         }
     }
 
-    /// <summary>Display a single message line and fire onStoryEnd on the next button press.</summary>
     public void ShowOneLineAndEnd(string speaker, string message)
     {
         fishSelectionPending = false;
@@ -149,7 +148,6 @@ public class InkDialoguePlayer : MonoBehaviour
 
             if (string.IsNullOrWhiteSpace(newLine))
             {
-                // Empty line (e.g. from a bare ~ function call) — skip display and resolve immediately
                 TryDisplayChoices();
                 if (currentStory.currentChoices.Count == 0)
                 {
