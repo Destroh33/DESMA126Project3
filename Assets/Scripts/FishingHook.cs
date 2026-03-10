@@ -6,6 +6,14 @@ public class FishingHook : MonoBehaviour
     public Fish attachedFish { get; private set; }
     public Transform lineAttachPoint;
 
+    public Color waterColor = new Color(0.5f, 0.5f, 1f, 0.5f);
+    private SpriteRenderer hookSprite;
+
+    private void Awake()
+    {
+        hookSprite = GetComponent<SpriteRenderer>();
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         Debug.Log(other.gameObject.name);
@@ -26,9 +34,36 @@ public class FishingHook : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            if (hookSprite != null)
+                hookSprite.color = waterColor;
+
+            if (attachedFish != null)
+            {
+                var fishSr = attachedFish.GetComponentInChildren<SpriteRenderer>();
+                if (fishSr)
+                    fishSr.color = waterColor;
+            }
+        }
+    }
+
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.CompareTag("Water"))
+        {
             isInWater = false;
+            if (hookSprite != null)
+                hookSprite.color = Color.white;
+
+            if (attachedFish != null)
+            {
+                var fishSr = attachedFish.GetComponentInChildren<SpriteRenderer>();
+                if (fishSr)
+                    fishSr.color = Color.white;
+            }
+        }
     }
 }

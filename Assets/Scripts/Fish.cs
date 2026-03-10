@@ -15,6 +15,9 @@ public class Fish : MonoBehaviour
 
     public Sprite invImage;
 
+    [Header("Visual")]
+    public Color waterColor = new Color(0.5f, 0.5f, 1f, 0.5f);
+
 
     private float baseY;
     private float phaseOffset;
@@ -64,5 +67,25 @@ public class Fish : MonoBehaviour
     {
         if (!isCaught && other.CompareTag("Destroyer"))
             Destroy(gameObject);
+    }
+
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Water"))
+        {
+            var sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr)
+                sr.color = waterColor;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (!isCaught && other.CompareTag("Water"))
+        {
+            var sr = GetComponentInChildren<SpriteRenderer>();
+            if (sr)
+                sr.color = Color.white;
+        }
     }
 }

@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FishingHook
   lineAttachPoint: {fileID: 5128676891851560891}
+  waterColor: {r: 0.5707547, g: 0.5707547, b: 1, a: 1}
 --- !u!1 &3003285630206521056
 GameObject:
   m_ObjectHideFlags: 0
