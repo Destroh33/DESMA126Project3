@@ -22,7 +22,6 @@ public class FishingInventory : MonoBehaviour
     private static readonly Dictionary<FishType, int> counts = new();
     private static readonly Dictionary<FishType, int> typeToSlotIndex = new();
     private static readonly Dictionary<FishType, Sprite> sprites = new();
-    private static int nextFreeSlot = 0;
 
     void Awake()
     {
@@ -67,17 +66,17 @@ public class FishingInventory : MonoBehaviour
         {
             counts[type]++;
         }
-        else if (nextFreeSlot < MaxSlots)
-        {
-            counts[type] = 1;
-            typeToSlotIndex[type] = nextFreeSlot++;
-            if (fish.invImage != null)
-                sprites[type] = fish.invImage;
-        }
         else
         {
-            Debug.Log("Inventory full.");
-            return;
+            int freeSlot = -1;
+            for (int i = 0; i < MaxSlots; i++)
+                if (!typeToSlotIndex.ContainsValue(i)) { freeSlot = i; break; }
+            if (freeSlot < 0) { Debug.Log("Inventory full."); return; }
+
+            counts[type] = 1;
+            typeToSlotIndex[type] = freeSlot;
+            if (fish.invImage != null)
+                sprites[type] = fish.invImage;
         }
 
         UpdateSlotUI(type, fish.invImage);
