@@ -30,6 +30,7 @@ public class InkDialoguePlayer : MonoBehaviour
 
    
     public event Action OnFishSelectionRequested;
+    public event Action OnApprenticeAccepted;
     private bool fishSelectionPending = false;
     private bool oneLineMode = false;
     private string oneLineMessage = "";
@@ -195,9 +196,14 @@ public class InkDialoguePlayer : MonoBehaviour
     {
         fishSelectionPending = false;
         currentStory = new Story(json);
+        currentStory.allowExternalFunctionFallbacks = true;
         currentStory.BindExternalFunction("TriggerFishSelection", () =>
         {
             fishSelectionPending = true;
+        });
+        currentStory.BindExternalFunction("AcceptApprentice", () =>
+        {
+            OnApprenticeAccepted?.Invoke();
         });
     }
 

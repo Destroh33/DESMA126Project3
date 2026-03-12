@@ -11,7 +11,7 @@ public class FishingHook : MonoBehaviour
 
     private void Awake()
     {
-        hookSprite = GetComponent<SpriteRenderer>();
+        hookSprite = GetComponentInChildren<SpriteRenderer>();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -38,6 +38,7 @@ public class FishingHook : MonoBehaviour
     {
         if (other.CompareTag("Water"))
         {
+            Debug.Log("In water");
             if (hookSprite != null)
                 hookSprite.color = waterColor;
 

@@ -84,6 +84,10 @@ public class PlayerTopDownMovement : MonoBehaviour
             return;
         }
 
+        // If any NPC is apprenticed, only allow interacting with that NPC
+        if (NPCScript.HasAnyApprenticed && !npc.isApprenticed)
+            return;
+
         dialogueOpen = true;
         rb.linearVelocity = Vector2.zero;
 

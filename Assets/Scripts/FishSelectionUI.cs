@@ -62,7 +62,7 @@ public class FishSelectionUI : MonoBehaviour
     private void SetButtonsVisible(bool visible)
     {
         foreach (var btn in slotButtons)
-            btn.gameObject.SetActive(visible);
+            if (btn != null) btn.gameObject.SetActive(visible);
 
         if (cancelButton != null)
             cancelButton.gameObject.SetActive(visible);

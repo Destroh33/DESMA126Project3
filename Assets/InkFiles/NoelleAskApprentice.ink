@@ -1,4 +1,4 @@
-EXTERNAL AcceptNoelle()
+EXTERNAL AcceptApprentice()
 
 Noelle: You've shown me a bunch of different fish already, how many are there in the sea? I want to look at them all! #portrait:noelle
 Sam: Well, I don't think even us fishermen know for sure. New ones pop up every few years and some types of fish also go away. #portrait:sam
@@ -12,7 +12,7 @@ Sam: Sure thing! I'd be happy to show you the ropes. Come meet me at the docks a
 Noelle: Do I need to have my own rod? I don't have any money to buy one... #portrait:noelle
 Sam: Don't worry, I've always got spares. #portrait:sam
 Noelle: Yay! I'll be here tomorrow, then! #portrait:noelle
-~ AcceptNoelle()
+~ AcceptApprentice()
 -> END
 
 ==time_to_think==

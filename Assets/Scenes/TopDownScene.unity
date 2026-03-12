@@ -966,6 +966,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCScript
   firstInteractionStory: {fileID: 4900000, guid: 156c190b21478484a8b82020d7ad2cec, type: 3}
   preApprenticeStory: {fileID: 4900000, guid: 9fc0e2b9b55d0814daa779fd7c261475, type: 3}
+  askApprenticeStory: {fileID: 4900000, guid: 17735b8396703984ab777e85c0f34036, type: 3}
+  postApprenticeStory: {fileID: 4900000, guid: 2025973182dd7e144b75c6b8fafefb06, type: 3}
+  endingStory: {fileID: 4900000, guid: c7d245a54f79a074b8d0fe7dc3692ec8, type: 3}
   fishStoryMappings:
   - fishType: 0
     story: {fileID: 4900000, guid: 99c77715c7a53ba46898d52f87bdd848, type: 3}
@@ -977,7 +980,8 @@ MonoBehaviour:
     story: {fileID: 4900000, guid: cd2e5ebb0843814408f355469f48a1c7, type: 3}
   - fishType: 2
     story: {fileID: 4900000, guid: d1ae202391ea6c04fb240395d12346a7, type: 3}
-  npcID: 
+  postApprenticePosition: {x: -1.59, y: 3, z: 0}
+  npcID: 0
 --- !u!58 &1246057948
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -1061,7 +1065,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 5f7d3a43706a87c46a097bb0f434c225, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -14494,7 +14498,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: af8ed65b96848d54299006e995c9ee12, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -14535,6 +14539,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NPCScript
   firstInteractionStory: {fileID: 4900000, guid: 909cc61f69f20c743a3ed4409354fc35, type: 3}
   preApprenticeStory: {fileID: 4900000, guid: f2f174c27dbb68e4782e6ed9166b5638, type: 3}
+  askApprenticeStory: {fileID: 4900000, guid: b6e9402bb2679124c8776e63b3f85134, type: 3}
+  postApprenticeStory: {fileID: 4900000, guid: cccbd2b1ee85aac4596fdf9049e41bd5, type: 3}
+  endingStory: {fileID: 4900000, guid: c1166b4676dbdbb42b2106fb8263f43f, type: 3}
   fishStoryMappings:
   - fishType: 0
     story: {fileID: 4900000, guid: 150b4cb4cd47c9c48ab594da789a5de3, type: 3}
@@ -14546,7 +14553,8 @@ MonoBehaviour:
     story: {fileID: 4900000, guid: 57859742c059d4642bc0a183b00974e5, type: 3}
   - fishType: 2
     story: {fileID: 4900000, guid: 73073d20fcd4ba243a3cbc05aab33759, type: 3}
-  npcID: 
+  postApprenticePosition: {x: -1.59, y: 3, z: 0}
+  npcID: 1
 --- !u!1 &1972119044
 GameObject:
   m_ObjectHideFlags: 0

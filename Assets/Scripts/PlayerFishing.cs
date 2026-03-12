@@ -2,13 +2,29 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+[System.Serializable]
+public struct NPCFishingOutfit
+{
+    public string npcID;
+    public Sprite sprite;
+    public Transform hookTip;
+}
+
 public class PlayerFishing : MonoBehaviour
 {
     public static bool ReturningFromFishing = false;
+
     [Header("References")]
     public GameObject hookPrefab;
     public Transform rodTip;
     public LineRenderer lineRenderer;
+
+    [Header("NPC Outfits")]
+    [Tooltip("One entry per NPC. npcID must match the NPC's ID (GameObject name or npcID field).")]
+    public NPCFishingOutfit[] npcOutfits;
+
+    [Tooltip("Shown when an NPC is apprenticed and watching.")]
+    public GameObject spectatorObject;
 
     [Header("Casting")]
     public float castForceX = -8f;
@@ -38,6 +54,38 @@ public class PlayerFishing : MonoBehaviour
     private float currentLineLength;
     private float sagTransitionT = 0f;
     private float sagMultiplier = 1f;
+
+    private void Start()
+    {
+        string apprenticedID = NPCScript.GetApprenticedID();
+
+        if (apprenticedID != null)
+        {
+            // Find and apply the matching NPC outfit
+            foreach (var outfit in npcOutfits)
+            {
+                if (outfit.npcID == apprenticedID)
+                {
+                    var sr = GetComponentInChildren<SpriteRenderer>();
+                    if (sr != null && outfit.sprite != null)
+                        sr.sprite = outfit.sprite;
+
+                    if (outfit.hookTip != null)
+                        rodTip = outfit.hookTip;
+
+                    break;
+                }
+            }
+
+            if (spectatorObject != null)
+                spectatorObject.SetActive(true);
+        }
+        else
+        {
+            if (spectatorObject != null)
+                spectatorObject.SetActive(false);
+        }
+    }
 
     private void Update()
     {
@@ -87,7 +135,6 @@ public class PlayerFishing : MonoBehaviour
         else
         {
             hookRb.gravityScale = 1f;
-           
         }
     }
 
@@ -160,7 +207,7 @@ public class PlayerFishing : MonoBehaviour
         }
 
         isCast = false;
-        Destroy(hookInstance); 
+        Destroy(hookInstance);
         hookInstance = null;
         hookRb = null;
         hookScript = null;
@@ -168,7 +215,6 @@ public class PlayerFishing : MonoBehaviour
         sagMultiplier = 1f;
         isRetractingAfterWater = false;
         lineRenderer.enabled = false;
-        Debug.Log("fishing finished");
         ReturningFromFishing = true;
         SceneManager.LoadScene("TopDownScene");
     }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NPCInteractionController : MonoBehaviour
 {
@@ -9,10 +10,16 @@ public class NPCInteractionController : MonoBehaviour
 
     private NPCScript currentNPC;
     private bool waitingForFishSelection = false;
+    private bool sceneTransitioning = false;
+
+    // Pending post-fish-story transitions
+    private bool pendingApprentice = false;  // load FishingScene after ask-apprentice story ends
+    private bool pendingEndGame = false;     // load StartingScreen after ending story ends
 
     void OnEnable()
     {
         dialoguePlayer.OnFishSelectionRequested += HandleFishSelectionRequested;
+        dialoguePlayer.OnApprenticeAccepted += HandleApprenticeAccepted;
         dialoguePlayer.onStoryEnd.AddListener(HandleStoryEnd);
         fishSelectionUI.OnFishChosen += HandleFishChosen;
         fishSelectionUI.OnCancelled += HandleFishSelectionCancelled;
@@ -21,6 +28,7 @@ public class NPCInteractionController : MonoBehaviour
     void OnDisable()
     {
         dialoguePlayer.OnFishSelectionRequested -= HandleFishSelectionRequested;
+        dialoguePlayer.OnApprenticeAccepted -= HandleApprenticeAccepted;
         dialoguePlayer.onStoryEnd.RemoveListener(HandleStoryEnd);
         fishSelectionUI.OnFishChosen -= HandleFishChosen;
         fishSelectionUI.OnCancelled -= HandleFishSelectionCancelled;
@@ -30,6 +38,8 @@ public class NPCInteractionController : MonoBehaviour
     {
         currentNPC = npc;
         waitingForFishSelection = false;
+        pendingApprentice = false;
+        pendingEndGame = false;
 
         TextAsset story = npc.GetCurrentStory();
         if (story == null)
@@ -38,10 +48,17 @@ public class NPCInteractionController : MonoBehaviour
             return;
         }
 
+        if (story == npc.endingStory)
+            pendingEndGame = true;
+
         dialogueCanvas.SetActive(true);
         dialoguePlayer.LoadStory(story);
     }
 
+    private void HandleApprenticeAccepted()
+    {
+        pendingApprentice = true;
+    }
 
     private void HandleFishSelectionRequested()
     {
@@ -70,7 +87,6 @@ public class NPCInteractionController : MonoBehaviour
 
         if (currentNPC != null && currentNPC.HasBeenGivenFish(fishType))
         {
-            // Fish already seen — don't remove it from inventory, just end with a short line
             dialoguePlayer.ShowOneLineAndEnd("", "Hmm.. I've seen that already.");
             return;
         }
@@ -97,6 +113,29 @@ public class NPCInteractionController : MonoBehaviour
 
     private void HandleStoryEnd()
     {
+        // After the ending story finishes → load StartingScreen
+        if (pendingEndGame)
+        {
+            pendingEndGame = false;
+            sceneTransitioning = true;
+            fishSelectionUI.Hide();
+            SceneManager.LoadScene("StartingScreen");
+            return;
+        }
+
+        // After the 3rd fish story → mark apprenticed and go to FishingScene
+        if (pendingApprentice)
+        {
+            pendingApprentice = false;
+            sceneTransitioning = true;
+            if (currentNPC != null) currentNPC.MarkApprenticed();
+            fishSelectionUI.Hide();
+            playerMovement.CloseDialogue();
+            SceneManager.LoadScene("FishingScene");
+            return;
+        }
+
+        // Normal story end
         if (currentNPC != null && !currentNPC.hasMetPlayer)
             currentNPC.MarkMet();
 
@@ -105,6 +144,7 @@ public class NPCInteractionController : MonoBehaviour
 
     public void EndInteraction()
     {
+        if (sceneTransitioning) return;
         waitingForFishSelection = false;
         fishSelectionUI.Hide();
         currentNPC = null;
@@ -113,6 +153,7 @@ public class NPCInteractionController : MonoBehaviour
 
     private void CloseDialogue()
     {
+        if (sceneTransitioning) return;
         fishSelectionUI.Hide();
         currentNPC = null;
         playerMovement.CloseDialogue();
