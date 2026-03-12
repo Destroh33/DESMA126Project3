@@ -87,7 +87,7 @@ public class NPCInteractionController : MonoBehaviour
 
         if (currentNPC != null && currentNPC.HasBeenGivenFish(fishType))
         {
-            dialoguePlayer.ShowOneLineAndEnd("", "Hmm.. I've seen that already.");
+            dialoguePlayer.ShowOneLineAndEnd(currentNPC.name, "Hmm.. I've seen that already.");
             return;
         }
 
