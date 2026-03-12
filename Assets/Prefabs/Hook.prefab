@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FishingHook
   lineAttachPoint: {fileID: 5128676891851560891}
   waterColor: {r: 0.5707547, g: 0.5707547, b: 1, a: 1}
+  splashSound: {fileID: 8300000, guid: 7c9292dca9f42814696478ebc29aac06, type: 3}
 --- !u!1 &3003285630206521056
 GameObject:
   m_ObjectHideFlags: 0

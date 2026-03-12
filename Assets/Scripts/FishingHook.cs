@@ -5,8 +5,9 @@ public class FishingHook : MonoBehaviour
     public bool isInWater { get; private set; }
     public Fish attachedFish { get; private set; }
     public Transform lineAttachPoint;
-
+    
     public Color waterColor = new Color(0.5f, 0.5f, 1f, 0.5f);
+    public AudioClip splashSound;
     private SpriteRenderer hookSprite;
 
     private void Awake()
@@ -20,6 +21,7 @@ public class FishingHook : MonoBehaviour
         if (other.CompareTag("Water"))
         {
             isInWater = true;
+            AudioManager.Instance?.PlaySFX(splashSound);
             return;
         }
 
